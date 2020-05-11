@@ -1,13 +1,13 @@
-#Golang telegram bot
+# Golang telegram bot
 
-##Start script
+## Start script
 
 ```
 go run main.go
 ```
 
 
-##Build script
+## Build script
 ```
 go build main.go
 main
