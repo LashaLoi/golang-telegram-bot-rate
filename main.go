@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	TOKEN    = "1085475952:AAEI0EEPj60dl5D6cHGy8fP1ct-KXB1pRRY"
+	TOKEN    = ""
 	KURS_URL = "https://www.nbrb.by/api/exrates/rates?periodicity=0"
 	BYN      = "BYN"
 	USD      = "USD"
@@ -51,14 +51,14 @@ func main() {
 			}
 			defer resp.Body.Close()
 
-			var kurses []RateData
-			if err := json.NewDecoder(resp.Body).Decode(&kurses); err != nil {
+			var rates []RateData
+			if err := json.NewDecoder(resp.Body).Decode(&rates); err != nil {
 				log.Panic(err)
 			}
 
-			for _, kurs := range kurses {
-				if kurs.Abbreviation == USD {
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("%s\n%v\n", kurs.Name, kurs.Rate))
+			for _, rate := range rates {
+				if rate.Abbreviation == USD {
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, fmt.Sprintf("%s\n%v\n", rate.Name, rate.Rate))
 					if _, err := bot.Send(msg); err != nil {
 						log.Panic(err)
 					}
@@ -68,10 +68,9 @@ func main() {
 			continue
 		}
 
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Please enter /BYN to check current kursExchange")
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Введите комманду /BYN чтобы узнать текущий курс доллара.")
 		if _, err := bot.Send(msg); err != nil {
 			log.Panic(err)
 		}
-
 	}
 }
